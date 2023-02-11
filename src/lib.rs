@@ -240,10 +240,10 @@ impl Pixely {
     fn update_vertex_buffer(&mut self, queue: &Queue) {
         let (width, height) = self.get_quad_size();
         let vertices = [
-            vertex([-width, -height], [0.0, 0.0]),
-            vertex([-width, height], [0.0, 1.0]),
-            vertex([width, -height], [1.0, 0.0]),
-            vertex([width, height], [1.0, 1.0]),
+            vertex([-width, -height], [0.0, 1.0]),
+            vertex([-width, height], [0.0, 0.0]),
+            vertex([width, -height], [1.0, 1.0]),
+            vertex([width, height], [1.0, 0.0]),
         ];
 
         queue.write_buffer(&self.vertex_buffer, 0, cast_slice(&vertices));
