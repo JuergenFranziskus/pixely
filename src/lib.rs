@@ -1,7 +1,7 @@
 use bytemuck::{cast_slice, Pod, Zeroable};
 use framebuffer::{FrameBuffer, Pixel};
 use raw_window_handle::{HasRawDisplayHandle, HasRawWindowHandle};
-use std::{iter::once, mem::size_of, num::NonZeroU32};
+use std::{iter::once, mem::size_of};
 use wgpu::{
     include_wgsl, Adapter, AddressMode, BindGroup, BindGroupDescriptor, BindGroupEntry,
     BindGroupLayout, BindGroupLayoutDescriptor, BindGroupLayoutEntry, BindingResource, BindingType,
@@ -226,8 +226,8 @@ impl Pixely {
         let image_copy = texture.as_image_copy();
         let layout = ImageDataLayout {
             offset: 0,
-            bytes_per_row: NonZeroU32::new((self.framebuffer.width() * size_of::<Pixel>()) as u32),
-            rows_per_image: NonZeroU32::new(self.framebuffer.height() as u32),
+            bytes_per_row: Some((self.framebuffer.width() * size_of::<Pixel>()) as u32),
+            rows_per_image: Some(self.framebuffer.height() as u32),
         };
         let size = Extent3d {
             width: self.framebuffer.width() as u32,
