@@ -280,6 +280,16 @@ impl Pixely {
         self.config.width = width as u32;
         self.config.height = height as u32;
     }
+    pub fn update_buffer(&mut self, device: &Device, queue: &Queue) {
+        let texture_recreated = self.texture.is_none();
+        if texture_recreated {
+            self.recreate_texture(device);
+        }
+
+        if texture_recreated || self.framebuffer_changed {
+            self.upload_texture(queue);
+        }
+    }
     pub fn render(&mut self, device: &Device, queue: &Queue) -> Result<(), SurfaceError> {
         if self.config.width == 0 || self.config.height == 0 {
             return Ok(());
@@ -287,9 +297,6 @@ impl Pixely {
         let texture_recreated = self.texture.is_none();
         if texture_recreated {
             self.recreate_texture(device);
-        }
-        if texture_recreated || self.framebuffer_changed {
-            self.upload_texture(queue);
         }
         if self.surface_changed {
             self.reconfigure_surface(device);
